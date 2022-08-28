@@ -22,8 +22,7 @@ public class User {
     @Column(name="salary")
     private int salary;
 
-    public User() {
-    }
+    public User() {}
 
     public User(String name, String surname, String department, int salary) {
         this.name = name;
@@ -31,7 +30,6 @@ public class User {
         this.department = department;
         this.salary = salary;
     }
-
 
     public int getId() {
         return id;
