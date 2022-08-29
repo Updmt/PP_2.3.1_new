@@ -1,12 +1,10 @@
 package web.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import web.dao.UserDAO;
+import org.springframework.web.bind.annotation.*;
 import web.model.User;
+import web.service.UserService;
 
 import java.util.List;
 
@@ -14,20 +12,50 @@ import java.util.List;
 public class SpringController {
 
 
-    private final UserDAO userDAO;
-
-    public SpringController(UserDAO userDAO) {
-        this.userDAO = userDAO;
-    }
-
-    @GetMapping("/hello-world")
-    public String sayHello() {
-        return "hello_world";
+    private final UserService userService;
+    public SpringController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping("/users")
     public String showAllUsers(Model model){
-        model.addAttribute("allUsers", userDAO.getAllUsers());
+        model.addAttribute("allUsers", userService.getAllUsers());
         return "all-users";
+    }
+
+    @GetMapping("/addNewUser")
+    public String addNewUser(Model model) {
+        model.addAttribute("user", new User());
+        return "user-info";
+    }
+
+    @PostMapping("/users")
+    public String createUser(@ModelAttribute("user") User user){
+        userService.createUser(user);
+        return "redirect:/users";
+    }
+
+    @GetMapping("/users/{id}")
+    public String show(@PathVariable("id") int id, Model model) {
+        model.addAttribute("user", userService.show(id));
+        return "show";
+    }
+
+    @GetMapping("/users/{id}/edit")
+    public String edit(Model model, @PathVariable("id") int id) {
+        model.addAttribute("user", userService.show(id));
+        return "edit";
+    }
+
+    @PatchMapping("/users/{id}")
+    public String update(@ModelAttribute("user") User user, @PathVariable("id") int id) {
+        userService.update(id, user);
+        return "redirect:/users";
+    }
+
+    @DeleteMapping("/users/{id}")
+    public String delete(@PathVariable("id") int id) {
+        userService.delete(id);
+        return "redirect:/users";
     }
 }
