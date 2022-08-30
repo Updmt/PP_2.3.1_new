@@ -17,6 +17,11 @@ public class SpringController {
         this.userService = userService;
     }
 
+    @GetMapping()
+    public String start(){
+        return "startPage";
+    }
+
     @GetMapping("/users")
     public String showAllUsers(Model model){
         model.addAttribute("allUsers", userService.getAllUsers());
