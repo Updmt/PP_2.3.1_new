@@ -42,13 +42,13 @@ public class SpringController {
 
     @GetMapping("/users/{id}")
     public String show(@PathVariable("id") int id, Model model) {
-        model.addAttribute("user", userService.show(id));
+        model.addAttribute("user", userService.get(id));
         return "show";
     }
 
     @GetMapping("/users/{id}/edit")
     public String edit(Model model, @PathVariable("id") int id) {
-        model.addAttribute("user", userService.show(id));
+        model.addAttribute("user", userService.get(id));
         return "edit";
     }
 
